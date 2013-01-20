@@ -1,27 +1,52 @@
 var http = require("http");
 var fs = require("fs");
-var url = require("url");
+//var url = require("url");
 
 http.createServer(function(req, res) 
 {
-    var pathname = url.parse(req.url).pathname;
-    
-    if (pathname == '/')
+    if (req.method == 'GET')
     {
-        fs.readFile('request_test/Index.htm', function(error, data)
+        fs.readFile('request_test/HTMLPage.htm', function(error, data)
         {
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.end(data);
         });
+//        console.log('GET request');
+        
+//        var query = url.parse(req.url, true).query;
+//        
+//        res.writeHead(200, {'Content-Type': 'text/html'});
+//        res.end('<h1>' + JSON.stringify(query) + '</h1>');
     }
-    else if (pathname == '/OtherPage')
+    else if (req.method == 'POST')
     {
-        fs.readFile('request_test/OtherPage.htm', function(error, data)
+//        console.log('POST request');
+        
+        req.on('data', function(data)
         {
             res.writeHead(200, {'Content-Type': 'text/html'});
-            res.end(data);
+            res.end('<h1>' + data + '</h1>');
         });
     }
+//    var pathname = url.parse(req.url).pathname;
+//    
+//    if (pathname == '/')
+//    {
+//        fs.readFile('request_test/Index.htm', function(error, data)
+//        {
+//            res.writeHead(200, {'Content-Type': 'text/html'});
+//            res.end(data);
+//        });
+//    }
+//    else if (pathname == '/OtherPage')
+//    {
+//        fs.readFile('request_test/OtherPage.htm', function(error, data)
+//        {
+//            res.writeHead(200, {'Content-Type': 'text/html'});
+//            res.end(data);
+//        });
+//    }
+
 }).listen(process.env.PORT, function()
 {
     console.log('Server is running.');

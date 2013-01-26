@@ -10,7 +10,7 @@ var server = http.createServer(function(req, res)
 		res.end(data);
 	});
 
-}).listen(52273, function()
+}).listen(process.env.PORT, function()
 {
 	console.log('server running....');
 });
